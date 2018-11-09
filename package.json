@@ -1,15 +1,15 @@
 {
-  "name": "ui-driver-skel",
-  "version": "0.0.2",
-  "description": "Skeleton Rancher UI driver for custom docker-machine drivers",
+  "name": "ui-driver-sakuracloud",
+  "version": "0.1.0",
+  "description": "Skeleton Rancher UI driver for the SakuraCloud docker-machine drivers",
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/rancher/ui-driver-skel.git"
+    "url": "git+https://github.com/sacloud/ui-driver-sakuracloud.git"
   },
-  "author": "Rancher Labs, Inc.",
+  "author": "Kazumichi Yamamoto",
   "license": "Apache-2.0",
   "bugs": {
-    "url": "https://github.com/rancher/rancher/issues"
+    "url": "https://github.com/sacloud/ui-driver-sakuracloud/issues"
   },
   "scripts": {
     "start": "./node_modules/.bin/gulp server",
@@ -17,14 +17,14 @@
     "build": "./node_modules/.bin/gulp build",
     "upload": "./scripts/upload"
   },
-  "homepage": "https://github.com/rancher/ui-driver-skel#readme",
+  "homepage": "https://github.com/sacloud/ui-driver-sakuracloud#readme",
   "devDependencies": {
     "babel-core": "^6.26.3",
-    "babel-plugin-add-module-exports": "^0.3.2",
+    "babel-plugin-add-module-exports": "^0.3.3",
     "babel-plugin-transform-es2015-modules-amd": "^6.24.1",
     "babel-preset-env": "^1.7.0",
     "del": "3.0.0",
-    "gulp": "3.9.1",
+    "gulp": "^3.9.1",
     "gulp-babel": "^7.0.1",
     "gulp-clean": "0.4.0",
     "gulp-concat": "2.6.1",

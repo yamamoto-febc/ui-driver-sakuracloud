@@ -3,32 +3,105 @@
     {{!-- This line shows the driver title which you don't have to change it --}}
     <div class="over-hr mb-20"><span>{{driverOptionsTitle}}</span></div>
 
-    {{!-- An example input option --}}
-    <div class="row box mt-20">
-      <h4>Instance Options</h4>
+    {{#accordion-list-item
+      title="API Key Settings"
+      detail="SakuraCloud API keys"
+      expandAll=expandAll
+      expand=(action expandFn)
+      expandOnInit=true
+    }}
       <div class="row">
-        <div class="col span-2 col-inline">
-          <label>CPUs</label>
+        <div class="col span-6">
+          <label class="acc-label">Access Token {{field-required}}</label>
+          {{input type="text" class="form-control" value=config.accessToken placeholder="Your SakuraCloud API Access Token"}}
+        </div>
+        <div class="col span-6">
+          <label class="acc-label">Access Token Secret {{field-required}}</label>
+          {{input type="text" class="form-control" value=config.accessTokenSecret placeholder="Your SakuraCloud API Access Token Secret"}}
+        </div>
+      </div>
+    {{/accordion-list-item}}
+
+    {{#accordion-list-item
+      title="Server Options"
+      detail="Configure server spec option"
+      expandAll=expandAll
+      expand=(action expandFn)
+      expandOnInit=false
+    }}
+      <div class="row">
+        <div class="col span-6">
+          <label class="acc-label">Zone</label>
+          {{new-select classNames="form-control" content=zones optionLabelPath='value' optionValuePath='value' value=config.zone}}
         </div>
 
-        <div class="col span-1">
-          {{config.cpuCount}}
+        <div class="col span-6">
+          <label class="acc-label">OS Type</label>
+          {{new-select classNames="form-control" content=osTypes optionLabelPath='name' optionValuePath='value' value=config.osType}}
         </div>
-        <div class="col span-3">
-          {{input-slider value=config.cpuCount valueMin=1 valueMax=32}}
-        </div>
+      </div>
 
-        <div class="col span-2 col-inline">
-          <label>Memory Size</label>
-        </div>
-        <div class="col span-4">
+      <div class="row">
+        <div class="col span-6">
+          <label class="acc-label">CPUs</label>
           <div class="input-group">
-            {{input-integer min=1 value=config.memorySize classNames="form-control"}}
-            <div class="input-group-addon bg-default">MB</div>
+            {{new-select classNames="form-control" content=serverPlans optionLabelPath='core' optionValuePath='core' value=config.core}}
+            <div class="input-group-addon bg-default">cores</div>
+          </div>
+        </div>
+
+        <div class="col span-6">
+          <label class="acc-label">Memory</label>
+          <div class="input-group">
+            {{new-select classNames="form-control" content=memorySizes optionLabelPath='value' optionValuePath='value' value=config.memory}}
+            <div class="input-group-addon bg-default">GB</div>
           </div>
         </div>
       </div>
-    </div>
+
+      <div class="row">
+        <div class="col span-6">
+          <label class="acc-label">Disk Plan</label>
+          {{new-select classNames="form-control" content=diskPlans optionLabelPath='name' optionValuePath='value' value=config.diskPlan}}
+        </div>
+
+        <div class="col span-6">
+          <label class="acc-label">Disk Size</label>
+          <div class="input-group">
+            {{new-select classNames="form-control" content=diskSizes optionLabelPath='value' optionValuePath='value' value=config.diskSize}}
+            <div class="input-group-addon bg-default">GB</div>
+          </div>
+        </div>
+      </div>
+    {{/accordion-list-item}}
+
+    {{#accordion-list-item
+      title="Security Options"
+      detail="Configure server security options"
+      expandAll=expandAll
+      expand=(action expandFn)
+      expandOnInit=false
+    }}
+      <div class="row">
+        <div class="col span-6">
+          <label class="acc-label">Password</label>
+          {{input type="password" class="form-control" value=config.password placeholder="If empty, generate random value"}}
+        </div>
+        <div class="col span-6">
+          <label class="acc-label">Packet Filter</label>
+          {{input type="text" class="form-control" value=config.packetFilter placeholder="Packet Filter ID"}}
+        </div>
+      </div>
+      <div class="row">
+        <div class="col span-6">
+          <label class="acc-label">Enable Password Auth via SSH</label>
+          <div>
+            {{input type="checkbox" checked=config.enablePasswordAuth}}
+          </div>
+        </div>
+      </div>
+
+    {{/accordion-list-item}}
 
     {{!-- This following contains the Name, Labels and Engine Options fields --}}
     <div class="over-hr"><span>{{templateOptionsTitle}}</span></div>
