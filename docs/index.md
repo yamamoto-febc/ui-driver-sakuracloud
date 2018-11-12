@@ -4,7 +4,6 @@ Rancher UI driver for [SakuraCloud](https://cloud.sakura.ad.jp) docker-machine d
 ## Using
 
 * Add a Machine Driver in Rancher 2.0 (Global -> Node Drivers)
-  * Name: Your `SakuraCloud` (see above).
   * Download URL: `https://sacloud.github.io/ui-driver-sakuracloud/docker-machine-driver-sakuracloud_linux-amd64.zip`
   * Custom UI URL: `https://sacloud.github.io/ui-driver-sakuracloud/component.js`
   * Whitelist Domains: `sacloud.github.io`
