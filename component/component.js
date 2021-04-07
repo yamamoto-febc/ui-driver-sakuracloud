@@ -1,10 +1,5 @@
-/*!!!!!!!!!!!Do not change anything between here (the DRIVERNAME placeholder will be automatically replaced at buildtime)!!!!!!!!!!!*/
 import NodeDriver , { registerDisplayLocation, registerDisplaySize } from 'shared/mixins/node-driver';
-
-// do not remove LAYOUT, it is replaced at build time with a base64 representation of the template of the hbs template
-// we do this to avoid converting template to a js file that returns a string and the cors issues that would come along with that
 const LAYOUT;
-/*!!!!!!!!!!!DO NOT CHANGE END!!!!!!!!!!!*/
 
 registerDisplayLocation('%%DRIVERNAME%%', 'config.zone');
 registerDisplaySize('%%DRIVERNAME%%', function(){return `${ get(this, 'config.memory') } GB, ${ get(this, 'config.core')  } Core`;});
@@ -12,10 +7,10 @@ registerDisplaySize('%%DRIVERNAME%%', function(){return `${ get(this, 'config.me
 /*!!!!!!!!!!!GLOBAL CONST START!!!!!!!!!!!*/
 // EMBER API Access - if you need access to any of the Ember API's add them here in the same manner rather then import them via modules, since the dependencies exist in rancher we dont want to expor the modules in the amd def
 const computed     = Ember.computed;
+const on           = Ember.on;
 const get          = Ember.get;
 const set          = Ember.set;
 const alias        = Ember.computed.alias;
-const service      = Ember.inject.service;
 const observer     = Ember.observer;
 const scheduleOnce = Ember.run.scheduleOnce;
 
@@ -26,7 +21,8 @@ const ZONES =
   [
     { value: "is1a"},
     { value: "is1b"},
-    { value: "tk1a"}
+    { value: "tk1a"},
+    { value: "tk1b"},
   ];
 
 const OS_TYPES =
@@ -62,7 +58,9 @@ const DISK_PLANS =
         {value: "500"},
         {value: "1024"},
         {value: "2048"},
-        {value: "4096"}
+        {value: "4096"},
+        {value: "8192"},
+        {value: "12288"}
       ]
     },
     {
@@ -78,7 +76,9 @@ const DISK_PLANS =
         {value: "750"},
         {value: "1024"},
         {value: "2048"},
-        {value: "4096"}
+        {value: "4096"},
+        {value: "8192"},
+        {value: "12288"}
       ]
     }
   ]
@@ -244,7 +244,6 @@ const SERVER_PLANS = [
 export default Ember.Component.extend(NodeDriver, {
   driverName: '%%DRIVERNAME%%',
   config:     alias('model.%%DRIVERNAME%%Config'),
-  app:        service(),
 
   zones:      ZONES,
   osTypes:    OS_TYPES,
@@ -288,13 +287,13 @@ export default Ember.Component.extend(NodeDriver, {
       set(this, 'config.diskSize', disks[0].value)
   },
 
-  coreObserver: observer('config.core', function() {
+  coreObserver: on('init', observer('config.core', function() {
     this.coreChoiced();
-  }),
+  })),
 
-  diskPlanObserver: observer('config.diskPlan', function(){
+  diskPlanObserver: on('init', observer('config.diskPlan', function(){
     this.diskPlanChoiced();
-  }),
+  })),
 
   // Write your component here, starting with setting 'model' to a machine with your config populated
   bootstrap: function() {
@@ -311,7 +310,7 @@ export default Ember.Component.extend(NodeDriver, {
       diskPlan            : 'ssd',
     });
 
-    set(this, 'model.%%DRIVERNAME%%Config', config);
+    const model = get(this, 'model')
+    set(model, '%%DRIVERNAME%%Config', config);
   },
-
 });
