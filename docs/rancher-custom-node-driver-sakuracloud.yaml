@@ -8,6 +8,6 @@ spec:
   displayName: Sakuracloud
   checksum: "3326a2a3d8674082091cbe3d1c902fdd94ec86fe55dbd9371f72f16c31062055"
   uiUrl: https://sacloud.github.io/ui-driver-sakuracloud/component.js
-  url: https://sacloud.github.io/ui-driver-sakuracloud/docker-machine-driver-sakuracloud_linux-amd64.zip
+  url: https://sacloud.github.io/ui-driver-sakuracloud/docker-machine-driver-sakuracloud_linux_amd64.zip
   whitelistDomains:
   - sacloud.github.io
