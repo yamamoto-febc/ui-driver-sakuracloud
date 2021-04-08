@@ -27,7 +27,7 @@
       detail="Configure server spec option"
       expandAll=expandAll
       expand=(action expandFn)
-      expandOnInit=false
+      expandOnInit=true
     }}
       <div class="row">
         <div class="col span-6">
@@ -128,5 +128,5 @@
   {{top-errors errors=errors}}
 
   {{!-- This component shows the Create and Cancel buttons --}}
-  {{save-cancel save=(action "save") cancel=(action "cancel")}}
+  {{save-cancel save=(action "save") cancel=(action "cancel") editing=editing}}
 </section>
