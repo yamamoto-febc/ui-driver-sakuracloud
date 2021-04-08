@@ -12,10 +12,6 @@ const get          = Ember.get;
 const set          = Ember.set;
 const alias        = Ember.computed.alias;
 const observer     = Ember.observer;
-const scheduleOnce = Ember.run.scheduleOnce;
-
-const defaultRadix = 10;
-const defaultBase  = 1024;
 
 const ZONES =
   [
@@ -261,30 +257,23 @@ export default Ember.Component.extend(NodeDriver, {
     set(this,'layout', template);
 
     this._super(...arguments);
-
-    scheduleOnce('afterRender', () => {
-      this.coreChoiced(true);
-      set(this, 'config.memory', '4');
-
-      this.diskPlanChoiced();
-    set(this, 'config.diskSize', '40');
-    });
-
   },
   /*!!!!!!!!!!!DO NOT CHANGE END!!!!!!!!!!!*/
 
   coreChoiced: function() {
       let coreChoice = get(this, 'config.core');
       let memories = get(this, 'serverPlans').findBy('core', coreChoice).memory;
+      let current = memories.findBy('value',get(this, 'config.memory'));
       set(this, 'memorySizes', memories);
-      set(this, 'config.memory', memories[0].value)
+      set(this, 'config.memory', current ? current.value : memories[0].value)
   },
 
   diskPlanChoiced: function() {
       let diskPlanChoice = get(this, 'config.diskPlan');
       let disks = get(this, 'diskPlans').findBy('value', diskPlanChoice).sizes;
+      let current = disks.findBy('value',get(this, 'config.diskSize'));
       set(this, 'diskSizes', disks);
-      set(this, 'config.diskSize', disks[0].value)
+      set(this, 'config.diskSize', current ? current.value : disks[0].value)
   },
 
   coreObserver: on('init', observer('config.core', function() {
@@ -312,5 +301,46 @@ export default Ember.Component.extend(NodeDriver, {
 
     const model = get(this, 'model')
     set(model, '%%DRIVERNAME%%Config', config);
+  },
+
+  validate() {
+    // Get generic API validation errors
+    this._super();
+    var errors = get(this, 'errors')||[];
+    if ( !get(this, 'model.name') ) {
+      errors.push('Name is required');
+    }
+
+    if ( !get(this, 'config.accessToken') ) {
+      errors.push('Access Token is required');
+    }
+    if ( !get(this, 'config.accessTokenSecret') ) {
+      errors.push('Access Token Secret is required');
+    }
+    if ( !get(this, 'config.zone') ) {
+      errors.push('Zone is required');
+    }
+    if ( !get(this, 'config.core') ) {
+      errors.push('CPUs is required');
+    }
+    if ( !get(this, 'config.memory') ) {
+      errors.push('Memory is required');
+    }
+    if ( !get(this, 'config.diskPlan') ) {
+      errors.push('DiskPlan is required');
+    }
+    if ( !get(this, 'config.diskSize') ) {
+      errors.push('DiskSize is required');
+    }
+
+    // Set the array of errors for display,
+    // and return true if saving should continue.
+    if ( get(errors, 'length') ) {
+      set(this, 'errors', errors);
+      return false;
+    } else {
+      set(this, 'errors', null);
+      return true;
+    }
   },
 });
